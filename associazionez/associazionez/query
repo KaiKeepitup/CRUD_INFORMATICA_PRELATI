@@ -1,0 +1,23 @@
+vedere messaggi 
+USE apam_db;
+SELECT * FROM messaggi;
+
+vedere utenti 
+
+USE apam_db;
+SELECT id, username, email, created_at FROM admin;
+
+generare hash 
+php -r "echo password_hash('LaPasswordNuova', PASSWORD_BCRYPT);"
+
+inserire admin db 
+
+USE apam_db;
+INSERT INTO admin (username, password_hash, email)
+VALUES ('nuovousername', 'INCOLLA_HASH_QUI', 'email@gmail.com');
+
+eliminare admin 
+DELETE FROM admin WHERE username = 'nomeutente';
+
+aggiornare pass admin 
+UPDATE admin SET password_hash = 'NUOVO_HASH' WHERE username = 'nomeutente';

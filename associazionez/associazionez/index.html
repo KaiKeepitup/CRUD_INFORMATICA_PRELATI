@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Associazione Ricerca Scientifica – APAM</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --apam-navy:  #03112b;
+            --apam-blue:  #004d7f;
+            --apam-accent:#ffa500;
+        }
+        body { background: var(--apam-navy); color: #e8edf4; font-family: Georgia, serif; }
+
+        /* NAVBAR */
+        .navbar { background: transparent; transition: background 0.35s; padding: 14px 0; }
+        .navbar.scrolled { background: rgba(0,77,127,0.92) !important; backdrop-filter: blur(10px); box-shadow: 0 2px 20px rgba(0,0,0,0.4); }
+        .navbar-brand { font-size: 1.15rem; font-weight: 700; color: #fff !important; }
+        .navbar-brand span { color: var(--apam-accent); }
+        .nav-link { color: rgba(255,255,255,0.85) !important; transition: color 0.2s; }
+        .nav-link:hover { color: var(--apam-accent) !important; }
+        .btn-accedi { background: var(--apam-blue); color: #fff !important; border-radius: 6px; padding: 6px 18px !important; border: 1px solid rgba(255,255,255,0.2); transition: background 0.25s !important; }
+        .btn-accedi:hover { background: var(--apam-accent) !important; color: var(--apam-navy) !important; }
+
+        /* HERO */
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center;
+            background: linear-gradient(160deg, rgba(0,77,127,0.6) 0%, rgba(3,17,43,0.9) 60%), url('R.jpg') center/cover no-repeat;
+            padding: 120px 20px 80px; }
+        .hero h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 700; text-shadow: 0 3px 12px rgba(0,0,0,0.7); margin-bottom: 20px; }
+        .hero h1 span { color: var(--apam-accent); }
+        .hero p { font-size: 1.2rem; color: rgba(255,255,255,0.85); text-shadow: 0 2px 8px rgba(0,0,0,0.6); max-width: 600px; margin: 0 auto 32px; }
+        .btn-hero { background: var(--apam-accent); color: var(--apam-navy); font-weight: 700; padding: 12px 32px; border-radius: 8px; font-size: 1rem; border: none; cursor: pointer; transition: opacity 0.2s, transform 0.15s; text-decoration: none; display: inline-block; }
+        .btn-hero:hover { opacity: 0.88; transform: translateY(-2px); color: var(--apam-navy); }
+
+        /* SEZIONI */
+        .section-light { background: #fff; color: #1a2a3a; }
+        .section-pale  { background: #e6f2ff; color: #1a2a3a; }
+        .section-dark  { background: var(--apam-navy); color: #e8edf4; }
+        section { padding: 80px 0; }
+
+        .section-title { font-size: 2rem; font-weight: 700; margin-bottom: 16px; }
+        .section-title::after { content: ''; display: block; width: 50px; height: 3px; background: var(--apam-accent); margin: 10px auto 0; border-radius: 2px; }
+
+        /* CARDS */
+        .info-card { background: rgba(0,77,127,0.08); border: 1px solid rgba(0,77,127,0.2); border-radius: 12px; padding: 28px; height: 100%; transition: transform 0.2s, box-shadow 0.2s; }
+        .info-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,77,127,0.15); }
+        .info-card .icon { font-size: 2rem; color: var(--apam-blue); margin-bottom: 12px; }
+
+        /* FORM CONTATTI */
+        .form-contact .form-control { background: #fff; color: #1a2a3a; border-color: #ccc; }
+        .form-contact .form-control:focus { box-shadow: 0 0 0 3px rgba(0,77,127,0.2); border-color: var(--apam-blue); }
+        .btn-submit { background: var(--apam-blue); color: #fff; border: none; padding: 12px 36px; border-radius: 8px; font-size: 1rem; transition: background 0.25s; cursor: pointer; }
+        .btn-submit:hover { background: var(--apam-accent); color: var(--apam-navy); }
+
+        /* MESSAGGI */
+        .messaggio-successo { background: rgba(76,175,80,0.15); border: 1px solid rgba(76,175,80,0.4); color: #2e7d32; border-radius: 8px; padding: 14px 18px; margin-bottom: 20px; }
+        .messaggio-errore   { background: rgba(244,67,54,0.15);  border: 1px solid rgba(244,67,54,0.4);  color: #c62828; border-radius: 8px; padding: 14px 18px; margin-bottom: 20px; }
+
+        /* MODAL */
+        .modal-content { background: #03112b; border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; color: #e8edf4; }
+        .modal-header  { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 20px 28px 16px; }
+        .modal-title   { font-size: 1.25rem; font-weight: 700; }
+        .modal-body    { padding: 24px 28px; }
+        .btn-close     { filter: invert(1) brightness(0.7); }
+
+        .modal-tabs { display: flex; gap: 0; margin-bottom: 22px; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 4px; }
+        .modal-tab  { flex: 1; text-align: center; padding: 9px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; color: rgba(232,237,244,0.5); transition: all 0.2s; border: none; background: transparent; }
+        .modal-tab.active { background: var(--apam-blue); color: #fff; }
+
+        .modal .form-control { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.18); color: #e8edf4; margin-bottom: 12px; }
+        .modal .form-control:focus { background: rgba(255,255,255,0.1); border-color: var(--apam-blue); box-shadow: 0 0 0 3px rgba(0,77,127,0.3); color: #e8edf4; }
+        .modal .form-control::placeholder { color: rgba(232,237,244,0.35); }
+
+        .btn-modal-submit { width: 100%; background: var(--apam-blue); color: #fff; border: none; padding: 12px; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.25s; margin-top: 4px; }
+        .btn-modal-submit:hover { background: var(--apam-accent); color: var(--apam-navy); }
+
+        .modal-msg-error   { background: rgba(244,67,54,0.12); border: 1px solid rgba(244,67,54,0.35); color: #ff8a80; border-radius: 8px; padding: 10px 14px; font-size: 0.83rem; margin-bottom: 14px; }
+        .modal-msg-success { background: rgba(76,175,80,0.12);  border: 1px solid rgba(76,175,80,0.35);  color: #a5d6a7; border-radius: 8px; padding: 10px 14px; font-size: 0.83rem; margin-bottom: 14px; }
+
+        /* FOOTER */
+        footer { background: #020d1e; color: rgba(255,255,255,0.3); padding: 28px 0; font-size: 0.82rem; text-align: center; }
+        footer a { color: rgba(255,255,255,0.18); text-decoration: none; transition: color 0.2s; }
+        footer a:hover { color: rgba(255,255,255,0.45); }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand" href="#home">A<span>P</span>AM</a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <span class="navbar-toggler-icon" style="filter:invert(1)"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav mx-auto gap-1">
+                <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#chi-siamo">Chi Siamo</a></li>
+                <li class="nav-item"><a class="nav-link" href="#progetti">Progetti</a></li>
+                <li class="nav-item"><a class="nav-link" href="#donazioni">Donazioni</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contatti">Contatti</a></li>
+            </ul>
+            <button class="btn-accedi nav-link" data-bs-toggle="modal" data-bs-target="#authModal">
+                <i class="bi bi-person-circle me-1"></i> Accedi
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section id="home" class="hero">
+    <div>
+        <h1>Benvenuti in <span>APAM</span></h1>
+        <p>Supportiamo la ricerca scientifica per un futuro migliore. Unisciti alla nostra comunità.</p>
+        <button class="btn-hero" data-bs-toggle="modal" data-bs-target="#authModal">
+            Unisciti a noi <i class="bi bi-arrow-right ms-1"></i>
+        </button>
+    </div>
+</section>
+
+<!-- CHI SIAMO -->
+<section id="chi-siamo" class="section-light">
+    <div class="container text-center">
+        <h2 class="section-title">Chi siamo?</h2>
+        <p class="lead mt-4 mb-5 mx-auto" style="max-width:700px;">
+            Siamo un'associazione nata nel 2017 con sede ad Agello. La nostra missione è promuovere la ricerca scientifica per affrontare le sfide più importanti della società.
+        </p>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4">
+                <div class="info-card">
+                    <div class="icon"><i class="bi bi-people-fill"></i></div>
+                    <h5>Comunità</h5>
+                    <p class="small text-muted">Una rete di ricercatori, volontari e sostenitori uniti da una passione comune.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="info-card">
+                    <div class="icon"><i class="bi bi-lightbulb-fill"></i></div>
+                    <h5>Innovazione</h5>
+                    <p class="small text-muted">Promuoviamo progetti innovativi che possono fare la differenza nel mondo.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="info-card">
+                    <div class="icon"><i class="bi bi-shield-check"></i></div>
+                    <h5>Trasparenza</h5>
+                    <p class="small text-muted">Gestiamo le risorse con massima trasparenza e responsabilità verso i sostenitori.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PROGETTI -->
+<section id="progetti" class="section-pale">
+    <div class="container text-center">
+        <h2 class="section-title">Progetti</h2>
+        <p class="lead mt-4 mx-auto" style="max-width:700px;">
+            Siamo sempre alla ricerca di nuovi progetti di ricerca da promuovere e con cui collaborare.
+        </p>
+    </div>
+</section>
+
+<!-- DONAZIONI -->
+<section id="donazioni" class="section-dark">
+    <div class="container text-center">
+        <h2 class="section-title">Supportaci</h2>
+        <p class="mt-4 mb-4 mx-auto" style="max-width:600px;color:rgba(232,237,244,0.8);">
+            Con il nostro portale forniamo la possibilità di aiutarci con una donazione per il bene della ricerca scientifica.
+        </p>
+        <button class="btn-hero" data-bs-toggle="modal" data-bs-target="#authModal">
+            <i class="bi bi-heart-fill me-2"></i>Accedi per donare
+        </button>
+    </div>
+</section>
+
+<!-- CONTATTI -->
+<section id="contatti" class="section-pale">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Contattaci</h2>
+            <p class="mt-3">Hai domande? Scrivici direttamente.</p>
+        </div>
+        <div id="messaggi"></div>
+        <form action="invia-email.php" method="POST" class="form-contact mx-auto" style="max-width:600px;">
+            <div class="mb-3">
+                <label class="form-label" style="color:#1a2a3a;font-weight:500;">Nome</label>
+                <input type="text" name="nome" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" style="color:#1a2a3a;font-weight:500;">Email</label>
+                <input type="email" name="email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" style="color:#1a2a3a;font-weight:500;">Messaggio</label>
+                <textarea name="messaggio" class="form-control" rows="5" placeholder="Scrivi il tuo messaggio..." required></textarea>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn-submit">
+                    <i class="bi bi-send me-2"></i>Invia messaggio
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="container">
+        <p class="mb-1">© 2025 APAM — Associazione per la Ricerca Scientifica · Agello</p>
+        <p><a href="login.php">admin</a></p>
+    </div>
+</footer>
+
+<!-- MODAL LOGIN / REGISTRAZIONE -->
+<div class="modal fade" id="authModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-shield-lock me-2" style="color:var(--apam-accent)"></i>Area Membri APAM
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-tabs">
+                    <button class="modal-tab active" id="tabLogin" onclick="switchTab('login')">Accedi</button>
+                    <button class="modal-tab" id="tabRegister" onclick="switchTab('register')">Registrati</button>
+                </div>
+
+                <div id="modalMsg" style="display:none;"></div>
+
+                <!-- LOGIN -->
+                <div id="formLogin">
+                    <form id="loginForm" onsubmit="submitLogin(event)">
+                        <input type="email" class="form-control" name="email" placeholder="Email" required>
+                        <input type="password" class="form-control" name="password" placeholder="Password" required>
+                        <button type="submit" class="btn-modal-submit">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Accedi
+                        </button>
+                    </form>
+                </div>
+
+                <!-- REGISTRAZIONE -->
+                <div id="formRegister" style="display:none;">
+                    <form id="registerForm" onsubmit="submitRegister(event)">
+                        <div class="row g-2">
+                            <div class="col">
+                                <input type="text" class="form-control" name="nome" placeholder="Nome" required>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" name="cognome" placeholder="Cognome" required>
+                            </div>
+                        </div>
+                        <input type="email" class="form-control mt-2" name="email" placeholder="Email" required>
+                        <input type="password" class="form-control mt-2" name="password" placeholder="Password (min. 6 caratteri)" required>
+                        <input type="password" class="form-control mt-2" name="conferma" placeholder="Conferma password" required>
+                        <button type="submit" class="btn-modal-submit mt-2">
+                            <i class="bi bi-person-plus me-2"></i>Registrati
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// Navbar scroll
+window.addEventListener('scroll', () => {
+    document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// Tab switcher
+function switchTab(tab) {
+    document.getElementById('formLogin').style.display    = tab === 'login'    ? '' : 'none';
+    document.getElementById('formRegister').style.display = tab === 'register' ? '' : 'none';
+    document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+    document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+    document.getElementById('modalMsg').style.display = 'none';
+}
+
+// Mostra messaggio nel modal
+function showMsg(text, type) {
+    const el = document.getElementById('modalMsg');
+    el.className = type === 'success' ? 'modal-msg-success' : 'modal-msg-error';
+    el.textContent = text;
+    el.style.display = 'block';
+}
+
+// LOGIN via AJAX → auth.php
+async function submitLogin(e) {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    try {
+        const res  = await fetch('auth.php?action=login', { method: 'POST', body: data });
+        const json = await res.json();
+        if (json.success) { window.location.href = 'dashboard.php'; }
+        else { showMsg(json.message, 'error'); }
+    } catch { showMsg('Errore di sistema. Riprova.', 'error'); }
+}
+
+// REGISTRAZIONE via AJAX → auth.php
+async function submitRegister(e) {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    try {
+        const res  = await fetch('auth.php?action=register', { method: 'POST', body: data });
+        const json = await res.json();
+        if (json.success) { window.location.href = 'dashboard.php'; }
+        else { showMsg(json.message, 'error'); }
+    } catch { showMsg('Errore di sistema. Riprova.', 'error'); }
+}
+
+// Messaggi form contatti
+document.addEventListener('DOMContentLoaded', () => {
+    const p = new URLSearchParams(window.location.search);
+    const d = document.getElementById('messaggi');
+    if (p.get('success') === '1') {
+        d.innerHTML = '<div class="messaggio-successo">✓ Messaggio inviato con successo!</div>';
+        setTimeout(() => { window.history.replaceState({}, '', location.pathname); d.innerHTML = ''; }, 5000);
+    }
+    if (p.get('error') === 'invio')       d.innerHTML = '<div class="messaggio-errore">✗ Errore nell\'invio. Riprova.</div>';
+    if (p.get('error') === 'validazione') d.innerHTML = '<div class="messaggio-errore">✗ Compila tutti i campi correttamente.</div>';
+    if (p.get('login') === '1') new bootstrap.Modal(document.getElementById('authModal')).show();
+});
+</script>
+</body>
+</html>
